@@ -1,0 +1,52 @@
+Merge sort algorithm implementation
+
+function mergeSort(arr) {
+  // base case: अगर array में 1 या 0 elements हैं तो already sorted
+  if (arr.length <= 1) return arr;
+
+  // 1. बीच का index निकालना
+  const mid = Math.floor(arr.length / 2);
+
+  // 2. बायाँ और दायाँ हिस्सा निकालना (slice से)
+  const left = arr.slice(0, mid);
+  const right = arr.slice(mid);
+
+  // 3. recursion से बायाँ और दायाँ दोनों को sort करना
+  const sortedLeft = mergeSort(left);
+  const sortedRight = mergeSort(right);
+
+  // 4. merge function से दोनों sorted हिस्सों को मिलाना
+  return merge(sortedLeft, sortedRight);
+}
+
+function merge(left, right) {
+  let result = [];    // final merged array
+  let i = 0;          // left का pointer
+  let j = 0;          // right का pointer
+
+  // दोनों arrays compare करके merge करना
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) {
+      result.push(left[i]);
+      i++;
+    } else {
+      result.push(right[j]);
+      j++;
+    }
+  }
+
+  // बचे हुए elements copy कर दो
+  while (i < left.length) {
+    result.push(left[i]);
+    i++;
+  }
+  while (j < right.length) {
+    result.push(right[j]);
+    j++;
+  }
+
+  return result;
+}
+
+// Example use:
+console.log(mergeSort([38, 27, 43, 3, 9, 82, 10]));

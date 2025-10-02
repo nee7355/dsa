@@ -171,6 +171,8 @@ class LinkdeList {
       while(current){
         list += current.data + ' > '
         current  = current.next;
+
+        if(current === this.head) break;
       }
 
       console.log(list.slice(0, -3));
@@ -212,6 +214,179 @@ class LinkdeList {
 
         return head1;
     }
+    // Delete Alternate Nodes in a Linked List
+    deleteAlternate(head = this.head){
+      if(!head || !head.next) return head;
+      let curr = head;
+      while(curr && curr.next){
+        curr.next = curr.next.next;
+        curr = curr.next;
+      }
+    }
+    // Rotate a Linked List
+    rotateLinkedList2(head = this.head, k = this.size()){
+        if(!head || k === 0){
+          return head;
+        }
+        let length = this.size();
+        let tail = head;
+        while(tail.next){
+          tail = tail.next;
+        }
+
+
+        k = k%length;
+        if(k===0) return head;
+
+        let current =  head;
+        let count = 1;
+        while(count<length-k && current){
+          current = current.next;
+          count++;
+        }
+
+        let newHead = current.next;
+        current.next = null;
+
+        tail.next = head;
+
+        return newHead;
+
+    }
+
+    // circular list
+    cirCularLinkedList( head = this.head){
+      if(!head) return;
+      let curr = head;
+      while(curr.next){
+        curr = curr.next;
+      }
+      curr.next = head;
+     
+    }
+    //Check if a Linked List is Circular
+    isCircular(head  = this.head){
+        if(!head ) return false;
+        let current = head.next;
+        while(current && current !== head){
+          current = current.next;
+        }
+        return current === head;
+    }
+
+    // Swap Kth nodes from ends
+    swapKth(k){
+      if(!this.head || k<=0) return this.head;
+  
+      const length = this.size();
+      if(k>length) return this.head;
+      if(2*k-1===length) return this.head; // same node no swap
+
+      // find kth from start
+      let prevStart = null, kthFromStart = this.head;
+      for(let i = 1; i<k; i++){
+        prevStart = kthFromStart;
+        kthFromStart = kthFromStart.next;
+      }
+
+      //find kth from end (length-1)
+      let prevEnd = null;
+      let kthFromEnd = this.head;
+      for(let i = 0; i<length-k+1; i++){
+        prevEnd = kthFromEnd;
+        kthFromEnd = kthFromEnd.next;
+      }
+
+      //ifprev  start exist link it to kthfromEnd
+      if(prevStart) prevStart.next  = kthFromEnd;
+      if(prevEnd) prevEnd.next = kthFromStart;
+
+      //swap next pointer
+      let  temp = kthFromStart.next;
+      kthFromStart.next = kthFromEnd.next;
+      kthFromEnd.next = temp;
+
+      //update head  if needed
+      if(k===1) this.head = kthFromEnd;
+      if(k===length) this.head = this.head = kthFromStart;
+
+      return this.head;
+    }
+
+    // Intersection Point in Y-Shaped Linked Lists
+ 
+    // Remove Duplicates from Sorted Linked List
+
+    removeDublicateFromSorted(head = this.head){
+      if(!head) return ;
+      let curr = head;
+      while(curr && curr.next){
+        if(curr.data== curr.next.data){
+          curr.next = curr.next.next;
+        }else{
+          curr = curr.next;
+
+        }
+      }
+    }
+// Find Nth Node from End
+
+    findNth(n){
+      const head = this.head
+      if(!this.head) return
+      const length = this.size();
+      if(n > length || n <= 0) return null;
+      let current = head;
+      for(let i = 0; i<length - n; i++){
+        current = current.next;
+      }
+ 
+      return current.data;
+    }
+
+    deleteKthNode(k){
+      
+      if(!this.head) return -1;
+      const length = this.size();
+      if(k > length || k <= 0) return -1;
+      
+      if(k===1) {
+        this.head = this.head.next;
+        return;
+      }
+      let curr = this.head;
+      for(let i = 1; i<k-1; i++){
+           curr = curr.next;
+      }
+      if(curr && curr.next){
+        curr.next = curr.next.next;
+      }
+    }
+
+    // Insert in a Sorted List
+
+    insertInSorted(data){
+      const node = new Node(data);
+      const head = this.head;
+      if(!head) {
+          this.head = node;
+          return ;
+      } 
+      if(data< this.head.data){
+        node.next = this.head;
+        return;
+      }
+      let current = head;
+      while(current.next && current.next.data<data){
+         current = current.next;
+      }
+     
+      node.next = current.next;
+      current.next = node;
+      
+    }
+
+    
 
 }
 
@@ -234,4 +409,13 @@ list.addData(50);
 // list.deleteLastOccurence(10);
 // list.deleteMiddle();
 // list.mergeAlternatePos(list.head, list2.head);
+// list.deleteAlternate();
+// console.log(list.rotateLinkedList2());
+// list.cirCularLinkedList()
+// console.log(list.isCircular())
+// list.swapKth(2);
+// list.removeDublicateFromSorted();
+// console.log(list.findNth(3));
+// list.deleteKthNode(2);
+list.insertInSorted(13);
 list.printList();
